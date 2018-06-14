@@ -1,0 +1,142 @@
+SQLite Consultation
+
+
+不区分大小写（除了GLOB和glob）
+注释：--直到换行  或者  /* */
+分号结束
+运算符 + - * / %（取余）
+比较 == = ！= <>（不等于） > < >= <= !< !>
+位运算 & | ~ << >>
+AND  OR  BETWEEN#AND#  EXISTS  IN(#,#)  LIKE（比较）  GLOB（大小写敏感的比较）   IS NULL  IS  ||（连接字符串）  UNIQUE（搜索每一行，确定没有重复）
+	LIKE例子： LIKE 'Ki%' 以Ki开始
+
+.databases	列出数据库的名称及其所依附的文件。
+.tables     查看列表
+.schema ?NAME? 查看完整信息
+.width num, num 设置输出列宽
+.dump ?TABLE?	以 SQL 文本格式转储数据库。如果指定了 TABLE 表，则只转储匹配 LIKE 模式的 TABLE 表。
+	sqlite3 test.db .dump > test.sql
+	sqlite3 test.db < test.sql
+	
+sqlite3+名称.db 创建数据库
+ATTACH DATABASE 'DatabaseName' As 'Alias-Name';附加
+DETACH DATABASE 'Alias-Name';分离
+CREATE TABLE创建表格
+	CREATE TABLE database_name.table_name(
+		column1 datatype  PRIMARY KEY(one or more columns),
+		column2 datatype,
+		column3 datatype,
+		.....
+		columnN datatype,
+	);
+	datatype后面加上NOT NULL表示字段不能为NULL
+DROP TABLE 删除表定义及其所有相关数据、索引、触发器、约束和该表的权限规范。
+	DROP TABLE database_name.table_name;
+INSERT INTO插入数据
+	INSERT INTO TABLE_NAME [(column1, column2, column3,...columnN)]  %省略表示依次插入
+	VALUES (value1, value2, value3,...valueN);
+SELECT 语句用于从 SQLite 数据库表中获取数据，以结果表的形式返回数据。这些结果表也被称为结果集。
+	SELECT column1, column2, columnN 
+	FROM table_name
+	WHERE [CONDITION | EXPRESSION]
+	GROUP BY column1, column2....columnN
+	HAVING [ conditions ]
+	ORDER BY column1, column2；
+	SELECT * FROM table_name;获取所有可用的字段
+		sqlite> SELECT tbl_name FROM sqlite_master WHERE type = 'table';  进行带有 SQLite 的编程时，您要使用下面的带有 sqlite_master 表的 SELECT 语句来列出所有在数据库中创建的表
+		sqlite> SELECT sql FROM sqlite_master WHERE type = 'table' AND tbl_name = 'COMPANY';列出关于 COMPANY 表的完整信息
+		select 2/3;输出结果
+	SELECT numerical_expression as  OPERATION_NAME 数值表达式，有几个内置的函数，比如 avg()、sum()、count()
+	SELECT CURRENT_TIMESTAMP; 日期表达式
+UPDATE 批量更改数据
+	UPDATE table_name
+	SET column1 = value1, column2 = value2...., columnN = valueN
+	WHERE [condition];
+DELETE 删除数据
+	DELETE FROM table_name
+	WHERE [condition];
+LIKE 匹配通配符
+	%表示0或者多个字符
+	_表示单个数字或者字符
+GLOB 匹配通配符（大小写敏感，遵循UNIX语法）
+	*表示0或者多个字符
+	？表示单个数字或字符
+LIMIT 子句用于限制由 SELECT 语句返回的数据数量。
+	LIMIT [# of rows]
+	LIMIT [# of rows] OFFSET [row num] 将返回从下一行开始直到给定的 OFFSET 为止的所有行
+ORDER BY 子句是用来基于一个或多个列按升序或降序顺序排列数据。
+	[ORDER BY column1, column2, .. columnN] [ASC | DESC];和WHERE一个位置
+GROUP BY 子句用于与 SELECT 语句一起使用，来对相同的数据进行分组。
+	GROUP BY 子句放在 WHERE 子句之后，放在 ORDER BY 子句之前
+	GROUP BY column1, column2....columnN
+HAVING 子句允许指定条件来过滤将出现在最终结果中的分组结果
+	由 GROUP BY 子句创建的分组上设置条件。
+DISTINCT 消除所有重复的记录
+	SELECT DISTINCT column1, column2,.....columnN 
+	FROM table_name
+	WHERE [condition]
+
+
+PRAGMA pragma_name = value;设置变量或者状态
+	auto_vacuum
+		0 或 NONE	禁用 Auto-vacuum。这是默认模式，意味着数据库文件尺寸大小不会缩小，除非手动使用 VACUUM 命令。
+		1 或 FULL	启用 Auto-vacuum，是全自动的。在该模式下，允许数据库文件随着数据从数据库移除而缩小。
+		2 或 INCREMENTAL	启用 Auto-vacuum，但是必须手动激活。在该模式下，引用数据被维持，免费页面只放在免费列表中。这些页面可在任何时候使用 incremental_vacuum pragma 进行覆盖。
+	cache_size
+		可获取或暂时设置在内存中页面缓存的最大尺寸
+		PRAGMA [database.]cache_size = pages;
+		pages 值表示在缓存中的页面数。内置页面缓存的默认大小为 2,000 页，最小尺寸为 10 页。
+	case_sensitive_like
+		控制内置的 LIKE 表达式的大小写敏感度。默认情况下，该 Pragma 为 false，这意味着，内置的 LIKE 操作符忽略字母的大小写。
+	count_changes
+		获取或设置数据操作语句的返回值，如 INSERT、UPDATE 和 DELETE。
+		默认情况下，该 Pragma 为 false，这些语句不返回任何东西。如果设置为 true，每个所提到的语句将返回一个单行单列的表，由一个单一的整数值组成，该整数表示操作影响的行。
+	database_list
+		将用于列出了所有的数据库连接
+	encoding
+		控制字符串如何编码及存储在数据库文件中
+		PRAGMA encoding = format; （UTF-8、UTF-16le 或 UTF-16be）
+	freelist_count
+		返回一个整数，表示当前被标记为免费和可用的数据库页数
+	index_info 
+		返回关于数据库索引的信息
+		PRAGMA [database.]index_info( index_name );
+	index_list
+		列出所有与表相关联的索引
+		PRAGMA [database.]index_list( table_name );
+		结果集将为每个给出列序列的索引、索引名称、表示索引是否唯一的标识显示一行。
+	journal_mode
+		获取或设置控制日志文件如何存储和处理的日志模式
+		PRAGMA [database.]journal_mode = mode;
+		DELETE	默认模式。在该模式下，在事务结束时，日志文件将被删除。
+		TRUNCATE	日志文件被阶段为零字节长度。
+		PERSIST	日志文件被留在原地，但头部被重写，表明日志不再有效。
+		MEMORY	日志记录保留在内存中，而不是磁盘上。
+		OFF	不保留任何日志记录。
+	max_page_count
+		为数据库获取或设置允许的最大页数
+	page_count
+		返回当前数据库中的网页数量
+	
+	
+	
+SQLite 约束
+	NOT NULL 约束：确保某列不能有 NULL 值。
+	DEFAULT 约束：当某列没有指定值时，为该列提供默认值。
+	UNIQUE 约束：确保某列中的所有值是不同的。
+	PRIMARY Key 约束：唯一标识数据库表中的各行/记录。
+	CHECK 约束：CHECK 约束确保某列中的所有值满足一定条件。
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
