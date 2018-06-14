@@ -1,0 +1,30 @@
+Latex Beamer Consultation
+
+
+\documentclass[14pt,hyperref={CJKbookmarks=true}]{beamer} //使中文链接有效
+\usepackage[space,noindent]{ctex}
+\usetheme{Copenhagen}
+\setbeamercolor{normal text}{bg=black!10}
+
+\begin{document}
+\kaishu
+\title[简称]{title}
+\subtitle{subtitle}
+\author{author}
+\institute[院系简称]{院系全称}
+\date[会议简称 2010]{会议全称,2010}
+\logo{\includegraphics{TeXlogo.pdf}}
+\begin{frame}
+\titlepage //相当于maketitle
+\end{frame}
+
+\section{概述}
+\subsection｛基本理论｝
+\begin{frame}
+\frametitle{帧标题}
+\framesubtitle{帧副题}
+.........
+\end{frame}
+
+
+\end{document}

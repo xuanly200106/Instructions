@@ -1,0 +1,58 @@
+Latex Math Consultation
+
+
+数学模式：
+
+公式序号（amsmath宏包）
+\usepackage[tbtags]{amsmath}
+\numberwithin{equation}{section}
+
+
+\mathrm使用正体
+\left \right括号大小可以调整，可用\big、\Big、\bigg、\Bigg加高
+分式\frac{}{}
+开根号\sqrt[#n]{}
+求和\sum   积分\int
+省略号\ldots（与逗号平齐） \cdots（与加号平齐）
+无穷\infty
+点乘\cdot
+
+行内公式：
+$   $
+\(    \)
+\begin{math}    \end{math}
+在二元运算符处自动换行，{}括起部分不换行
+行间公式：
+$$    $$
+\[      \]
+\begin{displaymath}   \end{displaymath}
+
+数学模式中使用array制表
+
+给予序号：
+单行公式环境equation
+公式组（对称分布）gather环境
+公式组（某个符号对称，一行可以有多个）align  以&标识对称位
+公式组（功能同上，列队距离弹性，两端对齐）flalign
+子公式环境subequations  \begin{subequations}时产生公式总序号，环境中的公式为其子序号（a.b.c）（用\eqref(#label)读取序号）
+
+多行公式环境multline  环境中用\\换行，最后给出序号
+或者用equation+split环境 用&标识对齐位\begin{equation}\begin{split}  \end{split}  \end{equation}  此时序号居中，用\usepackage[tbtags]{amsmath}可将其置底
+
+括号环境见Page267（amsmath宏包）
+
+加\displaystyle可在行间中使用多行
+多行上下标，使用amsmath环境 \atop分行  或者_{\substack{内容\\内容}}
+
+\displaybreak[n]进行换页（amsmath）
+
+矩阵见Page272
+
+定理、定义环境
+\newtheorem{环境名}[计数器（混合排序）]{标题}[排序单位（清零）]
+使用：\begin{环境名}[副标题]  ... \end{环境名}
+
+amsmath下 frac  \dfrac可以加大字体（行内公式）  \tfrac可以减小字体
+\cfrac可以用于连分数
+
+二项式见Page291
