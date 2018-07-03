@@ -1,0 +1,251 @@
+Latex Consultation
+
+
+\document{}     \usepackage{}   \pagenumbering{Roman/arabic}     \include{}   (可含文件.tex)
+专有命令、数学符号命令排版空格：紧跟{} or 空格 or \空格
+可选参数[] 必须参数{}
+%注释
+\typeout{提示内容}在编译生成log文件中有记录
+\typein[替代命令]{提示内容}，将在编译时候停止，输入提示内容后在log中记录，或者将替代命令替代为输入值
+\footnote{内容}加于文本中为脚注
+参考文献（使用hyperref时，每个文献后打上\par）
+\begin{thebibliography}{最宽序号(确定缩进量)}
+\bibitem[文献序号]{检索名}文献信息
+\end{thebibliography}
+正文中用\cite引用
+
+
+\newcommand{名称}[参数量]([第一个参数默认值]){内容，用#1表示第一个参数}
+\newcommand*  :内容不可超过一个段落（无换行\par）
+\providecommand 当有重名命令时，保存（不报错），重名不存在或取消时生效
+\renewcommand 重新定义
+对核心命令重新定义：   \makeatletter    \renewcommand   \makeatother
+函数定义可以嵌套：第一层参数#1,#2,#3...第二层参数##!,##2,##3...
+文本为数学模式\ensuremath{文本}
+
+\documentclass[titlepage（论文题名、摘要单独一页）,leqno公式序号至于公式左侧,fleqn公式缩进左对齐,openbib参考文献条目，第二行起缩进]
+
+左右模式：不换行，报错：Overfull \hbox
+段落模式：包括水平和垂直模式
+数学模式
+
+长度：
+18mu=1em
+fil,fill,filll表示任意长，但长度上限不同，依次增大
+弹性长度：2mm plus 0.2mm minus 0.3mm表示根据排版情况可以增加或者减少的上限
+\setlength{\parindent}{9mm}将首行缩进宽度改为9mm
+\hspace{2\parindent}生成首行缩进宽度两倍的水平空白
+\vspace{6.5mm}生成竖直的空白
+\addvspace与\vspace相近，只不过多个重叠时，取最大的长度，且只能在\par或空行后使用。
+显示长度：\showthe（编译时停止并显示）\the（显示到文章）、
+
+盒子：
+左右盒子
+\mbox{}大小与对象相同
+\fbox{}四周带有边框
+\makebox[宽度][位置]{对象}
+段落盒子：
+\begin{minipage}[位置][高度][内部位置]{宽度}
+对象
+\end{minipage}
+或者\parbox[位置][高度][内部位置]{宽度}{对象}（不能用抄录\verb或者抄录环境，以及脚注）
+线段盒子：\rule[垂直位移]{宽度}{高度}
+
+\width\height\depth\totalheight可测量盒子对象的相关数据
+
+可用\newsavebox{}创建自定义盒子
+\sbox{盒子}{对象}或\savebox{盒子}[宽度][位置]{对象}将对象存入盒子中
+或者用\begin{lrbox}{命令}
+对象
+\end{lrbox}进行存储（此时可含抄录，但对象前后的空格都将忽略）
+用\usebox{}进行调用
+
+lineno宏包中可用 \begin{bframe} \end{bframe}使用可换页的边框盒子（不能使用行间公式）
+
+\noindent无首行缩进，只对一个段落有效
+\CJKindent每段首行缩进两个汉字宽度
+数学公式后加文字说明，为使得仍然居中，可将文字放入盒子中
+
+\label{书签}创建书签，紧跟在被引用对象之后
+\ref{书签}引用书签的序号，标题或环境的序号，或文本所在章节的序号
+\pageref{书签}引用书签所在的页码（交叉引用时需要连续两次编译）
+
+书签名样式  cha:book
+前缀：cha章书签 sec节书签 fig插图 tab表格 equ公式 text文本
+
+环境列表见Page64
+
+\\[4mm]表示换行时间距加大4mm
+
+居中：\begin{center} 对象 \end{center}
+或{\centering 内容}
+\centerline{}表示行居中
+
+左对齐：flushleft（环境），{\raggedright 对象}
+右对齐：flushright（环境），{\raggedleft 对象}
+
+quotation或quote引用环境（前者多段引用，后者单段引用）
+
+sloppypar环境：加大单词间距，减少断词和突出文本行右端几率
+或者用\sloppy调用宽松，用\fussy调用精细
+
+抄录环境verbatim或verbatim*（或者将空格作为符号表示出）（es程序）
+或者用\verb符号 文本 符号 和\verb*符号 文本 符号（单行，符号不能为没有出现在文本中且不为*和空格的任何符号或数字）
+抄录环境和抄录命令均不能对英文自动换行，但对中文为主的可以。抄录环境中文本左对齐，抄录命令如果在段首，则自动缩进。
+抄录字体：verbatim@font
+抄录宏包Page 74
+
+调用ifthen宏包，条件判断
+\ifthenelse{条件判断}{肯定语句}{否定语句}
+
+字体见Page99
+
+版心底部对齐\flushbottom
+版心底部免对齐\raggedbottom
+
+
+
+断词\-
+断词声明\hyphenation{loga-ri-thm Windows app-le}
+\uchyph=0专有名词禁止断词
+
+Prof.`D.`E.`Knuth可避免断开（~表空格）
+\/对斜体单词的词距补偿
+\@或\null 表示句尾（插入在大写字母和句号之间），会加句尾词距
+小写字母后面加句号但不是结尾，要加之后空格改为\空格，防止多的词距
+
+换行：
+\\   \\*（换行不换页）   \\[高度] 
+段落模式：
+\newline
+\linebreak[优先级] 0最低 4最高 换行后会改变词距 \linebreak=\linebreak[4]
+\nolinebreak[优先级]
+
+
+换段落 两个回车或者\par
+换页\newpage   \pagebreak[]  \nopagebreak[]
+空白页\newpage \mbox{} \newpage
+
+首字母沉浮  lettrine宏包  Page140
+
+\documentclass[twocolumn]{article}双栏模式，有摘要，无章（book report则有章标题）
+
+\pagestyle{版式}empty无页脚、页眉  plain页脚中间页码，无页脚线（report和article的默认）  headings（book默认）myheadings与heading类似
+
+\thispagestyle{版式} 设置一页，例如封面\thispagestyle{empty}
+
+页码\pagenumbering{格式}
+\setcounter{page}{页码}
+
+宏包fancyhdr
+可用\fancyhead[参数]{内容}   \fancyfoot[]{}自定义页脚页眉
+参数可选EO LCR组合，为左右页和左中右（EL,OR等）
+\fancyhead[ER,OL]{\leftmark}
+\leftmark：章标题  \rightmark：节标题
+
+\author{作者} 用\and隔开多个作者，\thanks{脚注}
+
+除了\maketitle  也可以用题名页环境\begin{titlepage}   \end{titlepage}
+Page 160
+可用抄录，数学模式，\string处理特殊符号
+
+book,report中\part生成单独部标题页，article则不
+book,report中，\chapter新开一页，book默认从奇数页（右页）开始，用openany可以使得可以从任意页开始，reporting可以使用twoside和openright选项统一从右页开始
+
+\section[目录标题]{标题}
+
+\chapter*生成的标题没有标题标识，不进入目录和页眉
+如果想要排入目录（如摘要、参考文献），在标题后加上
+\addcontentsline{toc}{chapter或section等}{标题内容}
+如果想要排入页眉，可以紧跟一条
+\markboth{章标题内容}{节标题内容}
+或者\markright{节标题内容}
+
+利用脚注宏包\usepackage[stable]{footmisc}可在标题中用脚注
+用\string（不能传递给章目录）或者\symbol{95}可以使用反斜杠
+对于使用hyperrer 则使用\texorpdfstring{\symbol{92}}{\textbackslash}
+
+各部分的预定名Page171
+
+浮动环境，图表高度结合版面编排情况，确定图表位置
+\begin{figure}[位置]
+插图或者绘图环境
+\caption[目录标题内容]{标题内容}
+\end{figure}
+
+\begin{table}
+\caption[目录标题内容]{标题内容}
+表哥环境
+\end{table}
+
+位置：h就地放置（放不下则不执行），t当前页或下一页顶部，b当前页或下一页底部，p单独一页，！取消对浮动体数量和占比例的限制
+位置参数可以有多个，且与次序无关，总按照htbp来确定（默认为tbp）
+
+可用宏包caption修改图表标题格式Page182
+\usepackage{caption}  \captionsetup{margin=10pt,font=small,labelfont=bf}
+或\usepackage[margin=10pt,font=small,labelfont=bf]{caption}
+\captionof{参数设定}[目录标题内容]{标题内容}可为浮动环境之外的图表生成标题
+\captionof*{参数设定}{标题内容}则无标题标志，也不进入目录
+\begin后紧跟\ContinuedFloat标题采用同一个序号
+\ContinuedFloat序号后加一个子序号（3.5a，3.5b）
+    （与subfig宏包冲突）
+
+
+
+
+枚举：
+
+itermize或者enumerate环境
+用\item[标志]表示一个条例
+enumerate有标号，标志表示为每条的标志
+给出标志后中断enumerate自动标号
+
+插图\includegraphics[Page301（与次序有关）]{名称}
+\includegraphics[width=\textwidth /2]{...}
+
+浮动体组（floatrow宏包）（并排）
+\begin{figure}
+\begin{floatrow}[数量]
+\ffigbox[宽度]{\caption{标题}}{图形}
+\ffigbox[]{\captioin{}}{}
+\end{floatrow}
+\end{figure}
+
+\begin{table}
+\begin{floatrow}[数量]
+\ttabbox[宽度]{\caption{标题}}{表格}
+\end{floatrow}
+\end{table}
+混组
+\begin{figure}
+\begin{floatrow}[数量]
+\ffigbox[宽度]{\caption{标题}}{图形}
+\killfloatstyle
+\ttabbox[宽度]{\caption{标题}}{表格}
+\end{floatrow}
+\end{figure}
+
+\FBwidth为自然宽度  \Xhsize为剩余宽度
+插入图表命令之前使用\TopFloatBoxes   \CenterFloatBoxes   \BottomFloatBoxes可以确定对其方式
+
+子浮动体（同时调用subfig）
+\begin{subfloatrow}  \end{subfloatrow}（序号为继续的序号）
+\floatsetup{subfloatrowseq=qquad}设置浮动体间隔
+
+也可用\subfloat[标题]{图表}使用，此时序号为子序号
+同时需要手动的换行，间隔Page326
+
+
+文字环绕图片：
+\usepackage{wrapfig}
+
+\begin{wrapfigure}{行数}[位置][超出长度]{宽度}<图形>\end{wrapfigure}
+ 
+这里行数是指图形高度所占的文本行的数目。如果不给出此选项，wrapfig会自动计算。
+位置是指图形相对于文本的位置，须给定下面四项的一个。
+[r],[R]表示图形位于文本的左边。
+[l],[L]表示图形位于文本的右边。
+[i],[R]表示图形位于页面靠里的一边（用在双面格式里）。
+[o],[O]表示图形位于页面靠外的一边。
+超出长度是指图形超出文本边界的长度，缺省为 0pt。
+宽度则指图形的宽度。wrapfig会自动计算图形的高度。
